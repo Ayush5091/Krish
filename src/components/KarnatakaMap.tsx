@@ -78,8 +78,7 @@ export default function KarnatakaMap({ data }: KarnatakaMapProps) {
     <div className="relative">
       <svg
         viewBox="-5 60 295 410"
-        className="w-full h-auto"
-        style={{ maxHeight: 420 }}
+        className="w-full h-auto max-h-[300px] sm:max-h-[420px]"
       >
         {Object.entries(districtPaths).map(([name, { d, cx, cy }]) => {
           const score = dataMap[name] ?? 0;

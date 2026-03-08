@@ -12,16 +12,16 @@ export default function FPODashboard() {
   return (
     <DashboardLayout title="FPO Manager">
       {/* Pooled Listings */}
-      <div className="rounded-xl border border-border bg-card p-5 mb-6">
+      <div className="rounded-xl border border-border bg-card p-4 sm:p-5 mb-4 sm:mb-6">
         <h3 className="text-sm font-display font-semibold text-foreground mb-3">Active Pooled Listings</h3>
         <div className="space-y-3">
           {pooledListings.map((pool, i) => (
-            <div key={i} className="flex items-center justify-between p-3 rounded-lg bg-muted">
-              <div>
+            <div key={i} className="flex items-center justify-between p-3 rounded-lg bg-muted gap-3">
+              <div className="min-w-0">
                 <p className="text-sm font-medium text-foreground">{pool.crop} Pool</p>
                 <p className="text-xs text-muted-foreground">{pool.totalQuantity}kg from {pool.farmers} farmers</p>
               </div>
-              <div className="text-right">
+              <div className="text-right flex-shrink-0">
                 <p className="text-sm font-display font-bold text-price">₹{pool.askingPrice}/kg</p>
                 <span className={`text-[10px] px-2 py-0.5 rounded-full ${pool.status === "Active" ? "bg-primary/10 text-primary" : "bg-trust-mid/10 text-trust-mid"}`}>
                   {pool.status}
@@ -30,34 +30,54 @@ export default function FPODashboard() {
             </div>
           ))}
         </div>
-        <button className="w-full mt-3 rounded-lg border border-dashed border-border py-2.5 text-sm text-muted-foreground hover:text-foreground hover:border-primary/30 transition-colors">
+        <button className="w-full mt-3 rounded-lg border border-dashed border-border py-2.5 text-sm text-muted-foreground hover:text-foreground hover:border-primary/30 active:bg-muted/50 transition-colors">
           + Create Pool
         </button>
       </div>
 
       {/* Member Roster */}
-      <div className="rounded-xl border border-border bg-card p-5 mb-6">
+      <div className="rounded-xl border border-border bg-card p-4 sm:p-5 mb-4 sm:mb-6">
         <div className="flex items-center gap-2 mb-3">
           <Users className="w-4 h-4 text-primary" />
           <h3 className="text-sm font-display font-semibold text-foreground">Member Roster</h3>
         </div>
         <div className="space-y-1">
-          <div className="grid grid-cols-4 gap-2 text-[10px] text-muted-foreground uppercase tracking-wider px-3 py-2">
+          {/* Header - desktop only */}
+          <div className="hidden sm:grid grid-cols-4 gap-2 text-[10px] text-muted-foreground uppercase tracking-wider px-3 py-2">
             <span>Farmer</span>
             <span>Crops</span>
             <span>Trust</span>
             <span>Risk</span>
           </div>
           {fpoMembers.map((member, i) => (
-            <div key={i} className="grid grid-cols-4 gap-2 px-3 py-2.5 rounded-lg hover:bg-muted transition-colors items-center">
-              <p className="text-sm text-foreground truncate">{member.name}</p>
-              <p className="text-xs text-muted-foreground truncate">{member.crops}</p>
-              <span className="text-xs font-bold text-trust-high">{member.trustScore}</span>
-              <div className="flex items-center gap-1">
-                {member.vulnerabilityScore > 50 && <AlertTriangle className="w-3 h-3 text-exploitation" />}
-                <span className={`text-xs font-bold ${member.vulnerabilityScore > 50 ? "text-exploitation" : member.vulnerabilityScore > 30 ? "text-trust-mid" : "text-trust-high"}`}>
-                  {member.vulnerabilityScore}
-                </span>
+            <div key={i} className="px-3 py-2.5 rounded-lg hover:bg-muted active:bg-muted transition-colors">
+              {/* Mobile */}
+              <div className="sm:hidden">
+                <div className="flex items-center justify-between mb-0.5">
+                  <p className="text-sm text-foreground font-medium truncate">{member.name}</p>
+                  <div className="flex items-center gap-2 flex-shrink-0">
+                    <span className="text-xs font-bold text-trust-high">{member.trustScore}</span>
+                    <div className="flex items-center gap-0.5">
+                      {member.vulnerabilityScore > 50 && <AlertTriangle className="w-3 h-3 text-exploitation" />}
+                      <span className={`text-xs font-bold ${member.vulnerabilityScore > 50 ? "text-exploitation" : member.vulnerabilityScore > 30 ? "text-trust-mid" : "text-trust-high"}`}>
+                        {member.vulnerabilityScore}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <p className="text-xs text-muted-foreground truncate">{member.crops}</p>
+              </div>
+              {/* Desktop */}
+              <div className="hidden sm:grid grid-cols-4 gap-2 items-center">
+                <p className="text-sm text-foreground truncate">{member.name}</p>
+                <p className="text-xs text-muted-foreground truncate">{member.crops}</p>
+                <span className="text-xs font-bold text-trust-high">{member.trustScore}</span>
+                <div className="flex items-center gap-1">
+                  {member.vulnerabilityScore > 50 && <AlertTriangle className="w-3 h-3 text-exploitation" />}
+                  <span className={`text-xs font-bold ${member.vulnerabilityScore > 50 ? "text-exploitation" : member.vulnerabilityScore > 30 ? "text-trust-mid" : "text-trust-high"}`}>
+                    {member.vulnerabilityScore}
+                  </span>
+                </div>
               </div>
             </div>
           ))}
@@ -65,7 +85,7 @@ export default function FPODashboard() {
       </div>
 
       {/* Revenue Calculator */}
-      <div className="rounded-xl border border-border bg-card p-5">
+      <div className="rounded-xl border border-border bg-card p-4 sm:p-5">
         <button onClick={() => setShowCalc(!showCalc)} className="flex items-center gap-2 w-full">
           <Calculator className="w-4 h-4 text-price" />
           <h3 className="text-sm font-display font-semibold text-foreground">Revenue Split Calculator</h3>
@@ -82,8 +102,8 @@ export default function FPODashboard() {
             <div className="space-y-1">
               {fpoMembers.map((member, i) => (
                 <div key={i} className="flex justify-between text-sm py-1.5 border-b border-border last:border-0">
-                  <span className="text-muted-foreground">{member.name}</span>
-                  <span className="text-price font-medium">₹{perFarmer.toLocaleString()}</span>
+                  <span className="text-muted-foreground truncate mr-2">{member.name}</span>
+                  <span className="text-price font-medium flex-shrink-0">₹{perFarmer.toLocaleString()}</span>
                 </div>
               ))}
             </div>
