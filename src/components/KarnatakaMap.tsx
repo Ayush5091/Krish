@@ -1,54 +1,58 @@
 import { useState } from "react";
 
-// Simplified Karnataka district SVG paths (approximate outlines)
+/*
+ * More geographically accurate Karnataka district SVG paths.
+ * Coordinates derived from approximate lat/long boundaries mapped to SVG space.
+ * viewBox maps ~74°E–78.5°E (x) and ~11.5°N–18.5°N (y, inverted).
+ */
 const districtPaths: Record<string, { d: string; cx: number; cy: number }> = {
   "Belgaum": {
-    d: "M80,30 L140,25 L160,50 L155,90 L120,100 L85,95 L65,65 Z",
-    cx: 115, cy: 60
+    d: "M28,100 L38,85 L62,72 L98,68 L130,75 L148,88 L152,108 L145,132 L128,148 L108,155 L82,158 L58,150 L38,138 L28,118 Z",
+    cx: 90, cy: 112
   },
   "Dharwad": {
-    d: "M120,100 L155,90 L170,110 L165,140 L130,145 L110,125 Z",
-    cx: 140, cy: 118
+    d: "M108,155 L128,148 L145,132 L152,108 L172,112 L185,128 L188,152 L178,172 L158,178 L135,175 L115,168 Z",
+    cx: 152, cy: 148
   },
   "Uttara Kannada": {
-    d: "M40,70 L65,65 L85,95 L120,100 L110,125 L90,155 L50,160 L30,120 Z",
-    cx: 72, cy: 115
+    d: "M8,130 L28,100 L28,118 L38,138 L58,150 L82,158 L108,155 L115,168 L110,195 L98,228 L82,258 L65,278 L48,288 L32,275 L18,248 L8,218 L5,185 Z",
+    cx: 55, cy: 205
   },
   "Shimoga": {
-    d: "M90,155 L110,125 L130,145 L165,140 L175,170 L160,200 L120,205 L95,185 Z",
-    cx: 132, cy: 170
-  },
-  "Hassan": {
-    d: "M95,185 L120,205 L160,200 L165,230 L145,255 L110,250 L90,225 Z",
-    cx: 127, cy: 225
+    d: "M65,278 L82,258 L98,228 L110,195 L115,168 L135,175 L158,178 L178,172 L192,185 L198,208 L192,235 L178,258 L158,275 L135,282 L108,285 L85,282 Z",
+    cx: 142, cy: 232
   },
   "Chikmagalur": {
-    d: "M90,155 L95,185 L90,225 L70,220 L55,190 L50,160 Z",
-    cx: 73, cy: 188
+    d: "M48,288 L65,278 L85,282 L108,285 L135,282 L138,308 L128,332 L108,348 L85,352 L62,342 L45,325 L38,305 Z",
+    cx: 88, cy: 315
   },
   "Udupi": {
-    d: "M30,120 L50,160 L55,190 L40,200 L20,185 L15,145 Z",
-    cx: 35, cy: 165
+    d: "M5,265 L18,248 L32,275 L48,288 L38,305 L28,328 L18,345 L8,335 L2,308 L2,282 Z",
+    cx: 22, cy: 298
   },
   "Dakshina Kannada": {
-    d: "M20,185 L40,200 L55,190 L70,220 L65,250 L45,265 L20,245 L10,215 Z",
-    cx: 40, cy: 225
+    d: "M2,345 L8,335 L18,345 L28,328 L38,305 L45,325 L62,342 L68,368 L58,392 L42,408 L25,412 L12,398 L5,375 Z",
+    cx: 32, cy: 368
+  },
+  "Hassan": {
+    d: "M108,348 L128,332 L138,308 L135,282 L158,275 L178,258 L198,268 L212,288 L218,312 L208,338 L188,355 L165,362 L142,358 L118,355 Z",
+    cx: 168, cy: 322
   },
   "Kodagu": {
-    d: "M65,250 L70,220 L90,225 L110,250 L105,275 L80,280 Z",
-    cx: 87, cy: 255
+    d: "M68,368 L62,342 L85,352 L108,348 L118,355 L122,378 L112,402 L95,415 L78,418 L62,408 L58,392 Z",
+    cx: 92, cy: 385
   },
   "Mysuru": {
-    d: "M105,275 L110,250 L145,255 L170,265 L175,295 L145,310 L115,300 Z",
-    cx: 140, cy: 280
+    d: "M112,402 L122,378 L118,355 L142,358 L165,362 L188,355 L205,368 L218,388 L222,412 L212,435 L192,448 L168,452 L142,445 L125,428 Z",
+    cx: 170, cy: 405
   },
   "Mandya": {
-    d: "M145,255 L165,230 L195,235 L200,260 L170,265 Z",
-    cx: 175, cy: 250
+    d: "M188,355 L208,338 L218,312 L238,308 L258,315 L268,335 L262,358 L248,372 L228,378 L218,388 L205,368 Z",
+    cx: 238, cy: 345
   },
   "Tumkur": {
-    d: "M165,140 L200,135 L220,160 L215,200 L195,235 L165,230 L160,200 L175,170 Z",
-    cx: 192, cy: 180
+    d: "M178,172 L188,152 L208,145 L232,148 L255,158 L272,175 L278,198 L275,225 L262,248 L245,265 L238,308 L218,312 L212,288 L198,268 L178,258 L192,235 L198,208 L192,185 Z",
+    cx: 238, cy: 222
   },
 };
 
@@ -63,7 +67,7 @@ function getColor(score: number): string {
 }
 
 function getFillOpacity(score: number): number {
-  return 0.3 + (score / 100) * 0.6;
+  return 0.35 + (score / 100) * 0.55;
 }
 
 export default function KarnatakaMap({ data }: KarnatakaMapProps) {
@@ -73,13 +77,10 @@ export default function KarnatakaMap({ data }: KarnatakaMapProps) {
   return (
     <div className="relative">
       <svg
-        viewBox="0 0 240 330"
+        viewBox="-5 60 295 410"
         className="w-full h-auto"
-        style={{ maxHeight: 400 }}
+        style={{ maxHeight: 420 }}
       >
-        {/* Background */}
-        <rect width="240" height="330" fill="transparent" />
-
         {Object.entries(districtPaths).map(([name, { d, cx, cy }]) => {
           const score = dataMap[name] ?? 0;
           const isHovered = hovered === name;
@@ -89,34 +90,35 @@ export default function KarnatakaMap({ data }: KarnatakaMapProps) {
               key={name}
               onMouseEnter={() => setHovered(name)}
               onMouseLeave={() => setHovered(null)}
-              className="cursor-pointer transition-all"
+              className="cursor-pointer"
             >
               <path
                 d={d}
                 fill={getColor(score)}
                 fillOpacity={getFillOpacity(score)}
                 stroke="hsl(var(--border))"
-                strokeWidth={isHovered ? 2 : 1}
-                className="transition-all duration-200"
+                strokeWidth={isHovered ? 2.5 : 1}
+                strokeLinejoin="round"
                 style={{
                   filter: isHovered ? "brightness(1.3)" : undefined,
+                  transition: "all 0.2s ease",
                 }}
               />
               <text
                 x={cx}
-                y={cy - 6}
+                y={cy - 7}
                 textAnchor="middle"
-                className="fill-foreground pointer-events-none"
-                style={{ fontSize: 7, fontWeight: 600 }}
+                className="fill-foreground pointer-events-none select-none"
+                style={{ fontSize: 8, fontWeight: 600, letterSpacing: "0.02em" }}
               >
-                {name.length > 10 ? name.slice(0, 8) + "…" : name}
+                {name.length > 12 ? name.slice(0, 10) + "…" : name}
               </text>
               <text
                 x={cx}
-                y={cy + 6}
+                y={cy + 7}
                 textAnchor="middle"
-                className="fill-foreground pointer-events-none"
-                style={{ fontSize: 10, fontWeight: 700 }}
+                className="fill-foreground pointer-events-none select-none"
+                style={{ fontSize: 12, fontWeight: 700 }}
               >
                 {score}
               </text>
