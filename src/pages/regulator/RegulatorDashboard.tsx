@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import DashboardLayout from "@/components/DashboardLayout";
+import KarnatakaMap from "@/components/KarnatakaMap";
 import { districtExploitation, flaggedTraders } from "@/data/mockData";
 import { AlertTriangle } from "lucide-react";
 
@@ -14,22 +15,7 @@ export default function RegulatorDashboard() {
           <h3 className="text-sm font-display font-semibold text-foreground mb-1">Exploitation Heatmap</h3>
           <p className="text-xs text-muted-foreground mb-4">Karnataka districts by price gap ratio</p>
           
-          <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
-            {districtExploitation.map((d) => {
-              const intensity = d.score / 100;
-              const bg = d.score > 65 ? "bg-exploitation" : d.score > 40 ? "bg-trust-mid" : "bg-trust-high";
-              return (
-                <div
-                  key={d.name}
-                  className={`rounded-lg p-3 text-center border border-border`}
-                  style={{ backgroundColor: `hsl(${d.score > 65 ? '0 72%' : d.score > 40 ? '38 80%' : '145 55%'} ${Math.max(20, intensity * 50)}%)` }}
-                >
-                  <p className="text-[10px] font-medium text-foreground truncate">{d.name}</p>
-                  <p className="text-lg font-display font-bold text-foreground">{d.score}</p>
-                </div>
-              );
-            })}
-          </div>
+          <KarnatakaMap data={districtExploitation} />
 
           <div className="flex items-center gap-4 mt-4 text-[10px] text-muted-foreground">
             <div className="flex items-center gap-1"><div className="w-3 h-3 rounded bg-trust-high" /> Low risk</div>
