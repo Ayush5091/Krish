@@ -1,73 +1,104 @@
-# Welcome to your Lovable project
+# AgroLens
 
-## Project info
+Oracle-verified fair pricing to connect farmers directly with buyers, bypassing exploitative intermediaries.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+## About
 
-## How can I edit this code?
+AgroLens is a web application designed to bring transparency and fairness to Karnataka's agricultural markets. Today, farmers receive only a fraction of the consumer price, with much of the value lost to middlemen. AgroLens addresses this by providing oracle-verified pricing, trust scores, and regulatory oversight across four distinct user roles.
 
-There are several ways of editing your application.
+## Features
 
-**Use Lovable**
+### Farmer (Mobile-First)
+- **Dashboard** with today's fair price, active alerts, and quick actions
+- **List Produce** via a multi-step form with voice input support — select crop, set asking price compared to the oracle fair price, and optionally join pooled FPO listings
+- **My Listings** to track all listings with statuses (Open, Matched, In Escrow, Completed)
+- **Trust Score** displaying reputation and fair price capture percentage
+- **Price Alerts** for setting notifications on crop price thresholds
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+### Buyer / Trader (Desktop)
+- Browse available listings from all farmers
+- View asking price vs. oracle fair price with price gap calculations
+- Make offers directly to farmers
+- Trust score system for fair dealing
 
-Changes made via Lovable will be committed automatically to this repo.
+### Regulator (Desktop)
+- **Exploitation Heatmap** — interactive Karnataka district map color-coded by exploitation risk
+- **Flagged Intermediaries** — traders with high exploitation scores, price gap ratios, and number of affected farmers
+- **Trader Detail** — deep dive into a specific trader's connected farmers, price gaps, and trust scores
 
-**Use your preferred IDE**
+### FPO Manager (Desktop)
+- **Pooled Listings** — manage collective crop sales from multiple farmers
+- **Member Roster** — track all FPO members with trust scores, vulnerability risk indicators, and crop specializations
+- **Revenue Calculator** — distribute proceeds fairly with full transparency
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+## Tech Stack
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+| Layer | Technology |
+|-------|-----------|
+| **Framework** | React 18 + TypeScript |
+| **Build Tool** | Vite |
+| **Styling** | Tailwind CSS |
+| **UI Components** | shadcn-ui (Radix UI primitives) |
+| **Forms** | React Hook Form + Zod |
+| **Routing** | React Router v6 |
+| **State / Data** | TanStack React Query |
+| **Animation** | Framer Motion |
+| **Charts** | Recharts |
+| **Icons** | Lucide React |
+| **Testing** | Vitest + React Testing Library |
 
-Follow these steps:
+## Getting Started
+
+**Prerequisites:** Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
 
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+# Clone the repository
+git clone https://github.com/Ayush5091/market-voice-link.git
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+# Navigate to the project directory
+cd market-voice-link
 
-# Step 3: Install the necessary dependencies.
-npm i
+# Install dependencies
+npm install
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Start the development server
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+The app will be available at `http://localhost:8080`.
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## Available Scripts
 
-**Use GitHub Codespaces**
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start the development server with HMR |
+| `npm run build` | Create a production build |
+| `npm run build:dev` | Create a development build |
+| `npm run preview` | Preview the production build |
+| `npm run lint` | Run ESLint |
+| `npm test` | Run tests with Vitest |
+| `npm run test:watch` | Run tests in watch mode |
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## Project Structure
 
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+```
+src/
+├── pages/
+│   ├── Index.tsx                 # Home page with role selection
+│   ├── farmer/                   # Farmer dashboard & features
+│   ├── buyer/                    # Buyer dashboard
+│   ├── regulator/                # Regulator dashboard & trader detail
+│   └── fpo/                      # FPO Manager dashboard
+├── components/
+│   ├── ui/                       # shadcn-ui components
+│   ├── DashboardLayout.tsx       # Desktop dashboard wrapper
+│   ├── FarmerLayout.tsx          # Mobile-first farmer layout
+│   ├── KarnatakaMap.tsx          # Interactive district heatmap
+│   └── PageTransition.tsx        # Framer Motion page transitions
+├── data/
+│   └── mockData.ts               # Mock data for all roles
+├── hooks/                        # Custom React hooks
+├── lib/                          # Utility functions
+├── App.tsx                       # Root component with routing
+└── main.tsx                      # Application entry point
+```
