@@ -1,6 +1,8 @@
-# AgroLens
+# Krish
 
 Oracle-verified fair pricing to connect farmers directly with buyers, bypassing exploitative intermediaries.
+
+🌐 **Hosted Website:** [https://agrolens-beta.vercel.app/](https://agrolens-beta.vercel.app/)
 
 ## About
 
